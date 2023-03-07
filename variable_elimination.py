@@ -103,12 +103,12 @@ def multiply(factor1, factor2):
     new_entries = {}
     if f1_vars == f2_vars:  # Special case 1: f1 and f2 have the same sets of variables
         for key in factor1.get_entries().keys():
-            new_entries[key] = factor1.get_probability(key) * factor2.get_probability(key)
+            new_entries[key] = round(factor1.get_probability(key) * factor2.get_probability(key), 3)
     elif len(f1_vars) + len(f2_vars) == len(new_vars):  # Special case 2:  f1 and f2 have no variables in common
         for f1_key in factor1.get_entries().keys():
             for f2_key in factor2.get_entries().keys():
                 new_key = f1_key + f2_key
-                new_entries[new_key] = factor1.get_probability(f1_key) * factor2.get_probability(f2_key)
+                new_entries[new_key] = round(factor1.get_probability(f1_key) * factor2.get_probability(f2_key), 3)
     else:  # Case 3: f1 and f2 have common variables
         # generate all permutations
         perms = list(itertools.product((0, 1), repeat=len(new_vars)))
@@ -220,8 +220,9 @@ def inference(factorList, queryVariables, orderedListOfHiddenVariables, evidence
         if temp_factors[i + 1] in restricted_factors:
             restricted_factors.remove(temp_factors[i + 1])
     restricted_factors.append(product)
+
     # for testing purposes
-    print("\nFactor list after elimination (multiply + sum out) step : ")
+    print("\nFactor list after multiplying the remaining factors step : ")
     for factor in restricted_factors:
         print("variables: {} and entries: {}".format(factor.get_variables(), factor.get_entries()))
 
