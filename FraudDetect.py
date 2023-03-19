@@ -4,7 +4,7 @@ from variable_elimination import *
 T = travel, F = fraud, FP = foreign purchases, I = internet purchase, 
 O = owns computer, C = computer-related purchase 
 """
-travel_entries = {(0,): 0.05, (1,): 0.95}
+travel_entries = {(0,): 0.95, (1,): 0.05}
 T = Factor(['T'], travel_entries)
 
 FT_entries = {(0, 0): 0.996, (0, 1): 0.99, (1, 0): 0.004, (1, 1): 0.01}

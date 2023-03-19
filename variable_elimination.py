@@ -76,7 +76,7 @@ def sumout(factor, variable):
         new_key = tuple(list(key)[:target_idx] + list(key)[target_idx+1:])
         if new_key in remain_values.keys():
             remain_values[new_key] += factor.get_probability(key)
-            remain_values[new_key] = round(remain_values[new_key], 3)
+            remain_values[new_key] = remain_values[new_key]
         else:
             remain_values[new_key] = factor.get_probability(key)
 
@@ -103,12 +103,12 @@ def multiply(factor1, factor2):
     new_entries = {}
     if f1_vars == f2_vars:  # Special case 1: f1 and f2 have the same sets of variables
         for key in factor1.get_entries().keys():
-            new_entries[key] = round(factor1.get_probability(key) * factor2.get_probability(key), 3)
+            new_entries[key] = factor1.get_probability(key) * factor2.get_probability(key)
     elif len(f1_vars) + len(f2_vars) == len(new_vars):  # Special case 2:  f1 and f2 have no variables in common
         for f1_key in factor1.get_entries().keys():
             for f2_key in factor2.get_entries().keys():
                 new_key = f1_key + f2_key
-                new_entries[new_key] = round(factor1.get_probability(f1_key) * factor2.get_probability(f2_key), 3)
+                new_entries[new_key] = factor1.get_probability(f1_key) * factor2.get_probability(f2_key)
     else:  # Case 3: f1 and f2 have common variables
         # generate all permutations
         perms = list(itertools.product((0, 1), repeat=len(new_vars)))
@@ -123,7 +123,7 @@ def multiply(factor1, factor2):
                 f2_key.append(entry[new_vars.index(var)])
             f2_prob = factor2.get_probability(tuple(f2_key))
 
-            new_entries[tuple(entry)] = round(f1_prob * f2_prob, 3)
+            new_entries[tuple(entry)] = f1_prob * f2_prob
 
     return Factor(new_vars, new_entries)
 
@@ -142,7 +142,7 @@ def normalize(factor):
         sum_entries += factor.get_probability(entry)
 
     for entry in factor.get_entries().keys():
-        new_entries[entry] = round(factor.get_probability(entry) / sum_entries, 3)
+        new_entries[entry] = round(factor.get_probability(entry) / sum_entries, 6)
 
     return Factor(factor.get_variables(), new_entries)
 
